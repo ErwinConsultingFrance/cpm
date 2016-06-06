@@ -1,7 +1,6 @@
 "# cpm" 
 
-
-add clone folder in path
-then go in evolve custom layout folder
+- add clone folder in path
+- go in evolve custom layout folder
 do 
-cpm --gl <layoutName>
+```cpm --gl <layoutName>```
