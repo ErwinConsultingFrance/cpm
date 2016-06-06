@@ -1,0 +1,22 @@
+{
+  "name": "cpm",
+  "version": "1.0.0",
+  "description": "casewise layout package manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/casewise/cpm.git"
+  },
+  "author": "pouya.mohtacham@casewise.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/casewise/cpm/issues"
+  },
+  "homepage": "https://github.com/casewise/cpm#readme",
+  "dependencies": {
+    "minimist": "^1.2.0"
+  }
+}
