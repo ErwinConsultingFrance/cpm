@@ -8,15 +8,21 @@
     console.log(argv);
 
 
-    var npm = require('npm');
-    npm.load({}, function (er) {
-        if (er) {
-            console.log('error', er);
-        }
-        npm.commands.version(['patch'], function (a) {
-            console.log('a', a);
+    // check out npm version --help
+    function updateVersion(update) {
+        var npm = require('npm');
+        npm.load({}, function (er) {
+            if (er) {
+                console.log('error', er);
+            }
+            npm.commands.version([update], function (err) {
+                if (err) {
+                    console.error('error on update version', err);
+                }
+            });
         });
-    });
+
+    }
 
     function outputUsage() {
         var o = [];
