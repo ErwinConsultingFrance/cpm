@@ -1,6 +1,5 @@
 {
   "name": "cwpm",
-  "version": "0.0.2",
   "description": "casewise layout package manager",
   "main": "index.js",
   "scripts": {
