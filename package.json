@@ -23,7 +23,8 @@
   "homepage": "https://github.com/casewise/cpm#readme",
   "dependencies": {
     "minimist": "^1.2.0",
-    "node-zip": "^1.1.1"
+    "node-zip": "^1.1.1",
+    "npm": "^3.10.9"
   },
   "gitHead": "9d1748603a2ab931e1f0bb7c998151d6d6fe2381",
   "_id": "cwpm@0.0.2",
