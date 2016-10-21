@@ -13,7 +13,9 @@
         if (er) {
             console.log('error', er);
         }
-        npm.commands.version(['patch']);
+        npm.commands.version(['patch'], function (a) {
+            console.log('a', a);
+        });
     });
 
     function outputUsage() {
