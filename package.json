@@ -1,8 +1,8 @@
 {
-  "name": "cpm",
+  "name": "cwpm",
   "version": "0.0.2",
   "description": "casewise layout package manager",
-  "main": "cpm.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,7 +10,9 @@
     "type": "git",
     "url": "git+ssh://git@github.com/casewise/cpm.git"
   },
-  "author": "pouya.mohtacham@casewise.com",
+  "author": {
+    "name": "pouya.mohtacham@casewise.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/casewise/cpm/issues"
@@ -19,5 +21,33 @@
   "dependencies": {
     "minimist": "^1.2.0",
     "node-zip": "^1.1.1"
-  }
+  },
+  "gitHead": "9d1748603a2ab931e1f0bb7c998151d6d6fe2381",
+  "_id": "cwpm@0.0.2",
+  "_shasum": "44fa3e4f06a944c9ba09af97db8bac7eb456356d",
+  "_from": "cwpm@latest",
+  "_npmVersion": "3.10.3",
+  "_nodeVersion": "6.5.0",
+  "_npmUser": {
+    "name": "casewise",
+    "email": "pouya.mohtacham@casewise.com"
+  },
+  "dist": {
+    "shasum": "44fa3e4f06a944c9ba09af97db8bac7eb456356d",
+    "tarball": "https://registry.npmjs.org/cwpm/-/cwpm-0.0.2.tgz"
+  },
+  "maintainers": [
+    {
+      "name": "casewise",
+      "email": "pouya.mohtacham@casewise.com"
+    }
+  ],
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/cwpm-0.0.2.tgz_1476981960199_0.5596049833111465"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/cwpm/-/cwpm-0.0.2.tgz",
+  "readme": "ERROR: No README data found!",
+  "bin" : { "cpm" : "./index.js" } 
 }
