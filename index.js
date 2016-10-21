@@ -4,24 +4,31 @@
     'use strict';
     var fs = require('fs'),
         argv = require('minimist')(process.argv.slice(2)),
-        options = {};
+        options = {},
+        colors = require('colors'),
+        zip = new require('node-zip')();
+
+
+
     console.log(argv);
 
 
     // check out npm version --help
-    function updateVersion(update) {
+    function updateVersion(update, callback) {
         var npm = require('npm');
         npm.load({}, function (er) {
             if (er) {
-                console.log('error', er);
+                console.log('error on loading npm'.red, er);
             }
             npm.commands.version([update], function (err) {
                 if (err) {
-                    console.error('error on update version', err);
+                    console.error('error on update version'.red, err);
+                    return callback && callback(err);
+
                 }
+                return callback && callback(null);
             });
         });
-
     }
 
     function outputUsage() {
@@ -101,7 +108,8 @@
     options = {
         name: argv.name || argv.n || null,
         template: argv.template || argv.t || 'cwLayout',
-        package: argv.package || null
+        package: argv.package || null,
+        install: argv.install || null
     };
 
 
@@ -111,17 +119,8 @@
         });
     }
 
-
-    function addFileToZip(zip, fileName) {
-        console.log(fileName);
-
-
-    }
-
-    function zipFolder(outFile) {
+    function zipFolder(outFile, callback) {
         try {
-            var zip = new require('node-zip')();
-
             fs.readdir('./src', (err, files) => {
                 files.forEach(file => {
                     var fileName = './src/' + file;
@@ -133,6 +132,7 @@
                     compression: 'DEFLATE'
                 });
                 fs.writeFileSync(outFile, data, 'binary');
+                return callback && callback();
             });
 
 
@@ -149,12 +149,25 @@
     }
 
     if (options.package !== null) {
-        console.log('do package');
-        var layoutPackage = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+        options.package = (options.package === true ? 'patch' : options.package);
+        console.log('do package', options.package);
+        updateVersion(options.package, function (err) {
+            if (!err) {
+                console.log('version has been updated.'.green);
+                var layoutPackage = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+                createDirIfNotExists('dist');
+                var name = ['./dist/', layoutPackage.name, '-v', layoutPackage.version, '-evolve-v', layoutPackage['evolve-version'], '.zip'].join('');
+                zipFolder(name, function () {
+                    console.log('zip is done'.green);
+                });
+            }
+        });
+    }
 
-        createDirIfNotExists('dist');
-        var name = ['./dist/', layoutPackage.name, '-v', layoutPackage.version, '-evolve-v', layoutPackage['evolve-version'], '.zip'].join('');
-        zipFolder(name);
+    if (options.install !== null) {
+        if (!fs.existsSync("./evolve.json")) {
+            console.error('evolve.json is missing, impossible to continue'.error);
+        }
     }
 
 
