@@ -5,10 +5,8 @@
     var fs = require('fs'),
         argv = require('minimist')(process.argv.slice(2)),
         options = {},
-        colors = require('colors'),
-        zip = new require('node-zip')();
-
-
+        colors = require('colors');
+    // zip = new require('node-zip')();
 
     console.log(argv);
 
@@ -117,7 +115,8 @@
         name: argv.name || argv.n || null,
         template: argv.template || argv.t || 'cwLayout',
         package: argv.package || null,
-        install: argv.install || null
+        install: argv.install || null,
+        init: argv.init || null
     };
 
 
@@ -126,24 +125,21 @@
             console.log('generation done.');
         });
     }
+    var AdmZip = require('adm-zip');
 
     function zipFolder(outFile, callback) {
         try {
+            var zip = new AdmZip();
             fs.readdir('./src', (err, files) => {
                 files.forEach(file => {
                     var fileName = './src/' + file;
                     console.log('write in zip file', file, fileName);
-                    zip.file(file, fs.readFileSync(fileName, 'utf8'));
+                    zip.addFile(file, new Buffer(fs.readFileSync(fileName, 'utf8')), "no comment", "no attribute");
                 });
-                var data = zip.generate({
-                    base64: false,
-                    compression: 'DEFLATE'
-                });
-                fs.writeFileSync(outFile, data, 'binary');
+                var willSendthis = zip.toBuffer();
+                zip.writeZip(outFile);
                 return callback && callback();
             });
-
-
         } catch (err) {
             console.log(err);
         }
@@ -172,11 +168,80 @@
         });
     }
 
+
+    var request = require("request")
+
+
+    function getLayoutsList(callback) {
+        var url = "https://raw.githubusercontent.com/casewise/evolve-layouts/master/layouts.json?" + Math.random();
+        console.log(url);
+        request({
+            url: url,
+            json: true
+        }, function (error, response, body) {
+            if (!error && response.statusCode === 200) {
+                return callback && callback(null, body);
+            }
+        })
+    }
+
+
+    function getRawFileContent(fileUrl, callback) {
+        console.log(fileUrl);
+        request({
+            url: fileUrl,
+            encoding: null
+        }, function (error, response, body) {
+            if (!error && response.statusCode === 200) {
+                return callback && callback(null, body);
+            }
+        })
+    }
+
+
     if (options.install !== null) {
         if (!fs.existsSync("./evolve.json")) {
-            console.error('evolve.json is missing, impossible to continue'.error);
+            console.error('evolve.json is missing, impossible to continue'.red);
+        } else {
+            var evolveJson = JSON.parse(fs.readFileSync('./evolve.json', 'utf8'));
+            console.log(evolveJson);
+
+            getLayoutsList(function (err, layouts) {
+                console.log('get layouts', layouts);
+                for (var layoutName in evolveJson.dependencies) {
+                    if (evolveJson.dependencies.hasOwnProperty(layoutName)) {
+                        console.log(layoutName);
+
+                        if (layouts[layoutName] && layouts[layoutName]['evolve-versions']) {
+                            var fileUrl = layouts[layoutName]['evolve-versions'][evolveJson['evolve-version']];
+                            if (fileUrl !== undefined) {
+                                console.log('get file'.green, fileUrl);
+                                getRawFileContent(fileUrl, function (err, data) {
+                                    console.log('get zip data', data);
+                                    // var data = fs.readFileSync(name, 'binary');
+                                    fs.writeFileSync('./remove_me_later.zip', data, 'binary');
+                                    var zip = new AdmZip("./remove_me_later.zip");
+                                    var zipEntries = zip.getEntries(); // an array of ZipEntry records
+                                    createDirIfNotExists("./webDesigner");
+                                    createDirIfNotExists("./webDesigner/custom");
+                                    createDirIfNotExists("./webDesigner/custom/Marketplace");
+                                    createDirIfNotExists("./webDesigner/custom/Marketplace/libs/");
+                                    createDirIfNotExists("./webDesigner/custom/Marketplace/libs/cwLayouts");
+                                    createDirIfNotExists("./webDesigner/custom/Marketplace/libs/cwLayouts/" + layoutName);
+                                    zip.extractAllTo("./webDesigner/custom/Marketplace/libs/cwLayouts/" + layoutName, true);
+                                });
+                            } else {
+                                console.error(['impossible to find ', layoutName, ' for current version of evolve which is ', evolveJson['evolve-version']].join('').red);
+                            }
+                        }
+                    }
+                }
+
+            });
         }
     }
+
+    // if (options.init)
 
 
 }());

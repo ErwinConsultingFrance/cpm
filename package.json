@@ -22,10 +22,12 @@
   },
   "homepage": "https://github.com/casewise/cpm#readme",
   "dependencies": {
+    "adm-zip": "^0.4.7",
     "colors": "^1.1.2",
     "minimist": "^1.2.0",
     "node-zip": "^1.1.1",
-    "npm": "^3.10.9"
+    "npm": "^3.10.9",
+    "request": "^2.75.0"
   },
   "gitHead": "9d1748603a2ab931e1f0bb7c998151d6d6fe2381",
   "_id": "cwpm@0.0.2",
