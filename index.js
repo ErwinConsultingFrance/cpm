@@ -5,6 +5,15 @@
         options = {};
     console.log(argv);
 
+
+    var npm = require('npm');
+    npm.load({}, function (er) {
+        if (er) {
+            console.log('error', er);
+        }
+        npm.commands.version(['patch']);
+    });
+
     function outputUsage() {
         var o = [];
         o.push('** Casewise layout package manager ** \n');
