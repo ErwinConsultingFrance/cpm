@@ -1,6 +1,6 @@
 {
   "name": "cwpm",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "casewise layout package manager",
   "main": "index.js",
   "bin": {
@@ -23,7 +23,6 @@
   "homepage": "https://github.com/casewise/cpm#readme",
   "dependencies": {
     "minimist": "^1.2.0",
-
     "node-zip": "^1.1.1"
   },
   "gitHead": "9d1748603a2ab931e1f0bb7c998151d6d6fe2381",
@@ -40,10 +39,12 @@
     "shasum": "44fa3e4f06a944c9ba09af97db8bac7eb456356d",
     "tarball": "https://registry.npmjs.org/cwpm/-/cwpm-0.0.2.tgz"
   },
-  "maintainers": [{
-    "name": "casewise",
-    "email": "pouya.mohtacham@casewise.com"
-  }],
+  "maintainers": [
+    {
+      "name": "casewise",
+      "email": "pouya.mohtacham@casewise.com"
+    }
+  ],
   "_npmOperationalInternal": {
     "host": "packages-18-east.internal.npmjs.com",
     "tmp": "tmp/cwpm-0.0.2.tgz_1476981960199_0.5596049833111465"
