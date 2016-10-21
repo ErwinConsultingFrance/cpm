@@ -77,19 +77,27 @@
                     if (err) {
                         console.error(err);
                     } else {
-                        writeInFile(layoutName + "/" + layoutName + ".js", getTemplateJsContent(template, layoutName));
-                        touch(layoutName + "/" + layoutName + ".less");
-                        touch(layoutName + "/" + layoutName + ".css");
-                        touch(layoutName + "/" + layoutName + ".min.css");
-                        writeInFile(layoutName + "/" + layoutName + ".layout.config.json", JSON.stringify(getJsonConfig(layoutName)));
-                        writeInFile(layoutName + "/package.json", JSON.stringify(getPackageJsonConfig(layoutName)));
+                        fs.mkdir(layoutName + "/src", function (err) {
+                            if (err) {
+                                console.error(err);
+                            } else {
+                                writeInFile(layoutName + "/src/" + layoutName + ".js", getTemplateJsContent(template, layoutName));
+                                touch(layoutName + "/src/" + layoutName + ".less");
+                                touch(layoutName + "/src/" + layoutName + ".css");
+                                touch(layoutName + "/src/" + layoutName + ".min.css");
+                                writeInFile(layoutName + "/src/" + layoutName + ".layout.config.json", JSON.stringify(getJsonConfig(layoutName)));
+                                writeInFile(layoutName + "/package.json", JSON.stringify(getPackageJsonConfig(layoutName)));
 
-                        if (template === "ngLayout") {
-                            writeInFile(layoutName + "/" + layoutName + ".ng.html", '<div ng-controller="' + layoutName + '"></div>');
-                        }
-                        return callback && callback();
+                                if (template === "ngLayout") {
+                                    writeInFile(layoutName + "/" + layoutName + ".ng.html", '<div ng-controller="' + layoutName + '"></div>');
+                                }
+                                return callback && callback();
+                            }
+                        });
                     }
                 });
+            } else {
+                console.log("layout already exist in folder");
             }
         });
     }
