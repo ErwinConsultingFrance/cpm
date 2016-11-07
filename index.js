@@ -67,7 +67,23 @@
         return {
             'name': layoutName,
             'description': layoutName,
-            'version': '0.0.0'
+            'version': '0.0.0',
+            'main': "",
+            'scripts': {
+                'test': ""
+            },
+            'repository': {
+                'type': "git",
+                'url': ""
+            },
+            'author': "",
+            'license': "MIT",
+            'bugs': {
+                'url': ""
+            },
+            'homepage': "",
+            'wiki': "",
+            'evolve-version': "0.0"
         };
     }
 
@@ -244,20 +260,20 @@
         var output = "#List of layouts\n";
         for (var layout in layoutsJson) {
             if (layoutsJson.hasOwnProperty(layout)) {
-                output += "##" + layout +  ": \n";
+                output += "##" + layout + ": \n";
                 if (layoutsJson[layout].hasOwnProperty("description")) {
-                    output += "- " + layoutsJson[layout].description +  "\n";
+                    output += "- " + layoutsJson[layout].description + "\n";
                 }
                 if (layoutsJson[layout].hasOwnProperty("wiki")) {
-                    output += "- " + layoutsJson[layout].wiki +  "\n";
+                    output += "- " + layoutsJson[layout].wiki + "\n";
                 }
                 if (layoutsJson[layout].hasOwnProperty("evolve-versions")) {
-                    output += "- Compatibility : Evolve " + Object.keys(layoutsJson[layout]["evolve-versions"]) + "\n\n" ;
+                    output += "- Compatibility : Evolve " + Object.keys(layoutsJson[layout]["evolve-versions"]) + "\n\n";
                 }
             }
         }
         console.log(output)
-        writeInFile(path + "/README.md",output);
+        writeInFile(path + "/README.md", output);
     }
 
 
