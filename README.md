@@ -1,6 +1,5 @@
-"# cpm" 
-
-- add clone folder in path
-- go in evolve custom layout folder
-do 
-```cpm --gl <layoutName>```
+# How to use it
+https://github.com/casewise/cpm/wiki
+#List of layouts
+##MatrixByObject
+https://github.com/nevakee716/cwLayoutMatrixByObject/wiki

@@ -35,6 +35,8 @@
         o.push('Usage : \n');
         o.push('--name|--n <layoutName>\n');
         o.push('--template|--t <templateName:cwLayout(default)|ngLayout> \n');
+        o.push('--package <patch|minor|major> \n');
+        o.push('--register <evolve-layouts-path> \n');        
         console.log(o.join(''));
     }
 
@@ -205,20 +207,15 @@
             console.error('evolve.json is missing, impossible to continue'.red);
         } else {
             var evolveJson = JSON.parse(fs.readFileSync('./evolve.json', 'utf8'));
-            console.log(evolveJson);
-
             getLayoutsList(function(err, layouts) {
-                console.log('get layouts', layouts);
                 for (var layoutName in evolveJson.dependencies) {
                     if (evolveJson.dependencies.hasOwnProperty(layoutName)) {
-                        console.log(layoutName);
-
+                        console.log("get layout : " + layoutName);
                         if (layouts[layoutName] && layouts[layoutName]['evolve-versions']) {
                             var fileUrl = layouts[layoutName]['evolve-versions'][evolveJson['evolve-version']];
                             if (fileUrl !== undefined) {
-                                console.log('get file'.green, fileUrl);
+                                console.log(('get file' + fileUrl).green);
                                 getRawFileContent(fileUrl, function(err, data) {
-                                    console.log('get zip data', data);
                                     // var data = fs.readFileSync(name, 'binary');
                                     fs.writeFileSync('./remove_me_later.zip', data, 'binary');
                                     var zip = new AdmZip("./remove_me_later.zip");
@@ -262,11 +259,17 @@
                         layoutsJson[layoutToAdd.name] = {};
                         layoutsJson[layoutToAdd.name]["name"] = layoutToAdd.name;
                         layoutsJson[layoutToAdd.name]["repository"] = layoutToAdd.repository.url;
+                        if(layoutToAdd.hasOwnProperty("description")) {
+                            layoutsJson[layoutToAdd.name]["description"] = layoutToAdd["description"];
+                        }
                         var gitPackageUrl = "https://github.com/casewise/evolve-layouts/raw/master/dist/" + layoutToAdd.name + "/" + layoutToAddPackage;
                         layoutsJson[layoutToAdd.name]["evolve-versions"] = {};
                         layoutsJson[layoutToAdd.name]["evolve-versions"][layoutToAdd["evolve-version"]] = gitPackageUrl;
 
                     } else {
+                        if(layoutToAdd.hasOwnProperty("description")) {
+                            layoutsJson[layoutToAdd.name]["description"] = layoutToAdd["description"];
+                        }
                         var gitPackageUrl = "https://github.com/casewise/evolve-layouts/raw/master/dist/" + layoutToAdd.name + "/" + layoutToAddPackage;
                         layoutsJson[layoutToAdd.name]["evolve-versions"][layoutToAdd["evolve-version"]] = gitPackageUrl;
                     }
