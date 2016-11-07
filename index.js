@@ -68,16 +68,16 @@
             'name': layoutName,
             'description': layoutName,
             'version': '0.0.0',
-            'main': "",
+            'main': '',
             'scripts': {
-                'test': ""
+                'test': ''
             },
             'repository': {
                 'type': "git",
-                'url': ""
+                'url': ''
             },
-            'author': "",
-            'license': "MIT",
+            'author': '',
+            'license': 'MIT',
             'bugs': {
                 'url': ""
             },
@@ -280,9 +280,9 @@
 
     // if (options.init)
     if (options.register !== null) {
-        if (!fs.existsSync(options.register + "/layouts.json")) {
+        if (!fs.existsSync(options.register + '/layouts.json')) {
             console.error((options.register + '/layouts.json is missing, impossible to continue').red);
-        } else if (!fs.existsSync("package.json")) {
+        } else if (!fs.existsSync('package.json')) {
             console.error('package.json is missing, impossible to continue'.red);
         } else {
             var layoutsJson = JSON.parse(fs.readFileSync(options.register + '/layouts.json', 'utf8'));
@@ -290,7 +290,7 @@
             if (!(layoutToAdd.hasOwnProperty("name") && layoutToAdd.hasOwnProperty("version") && layoutToAdd.hasOwnProperty("evolve-version"))) {
                 console.log("package.json is not correct".red);
             } else {
-                var layoutToAddPackage = layoutToAdd.name + "-v" + layoutToAdd.version + "-evolve-v" + layoutToAdd["evolve-version"] + ".zip";
+                var layoutToAddPackage = layoutToAdd.name + '-v' + layoutToAdd.version + "-evolve-v" + layoutToAdd["evolve-version"] + ".zip";
                 if (!fs.existsSync("dist/" + layoutToAddPackage)) {
                     console.log("no package available for your current version")
                 } else {
