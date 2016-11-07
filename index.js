@@ -36,7 +36,7 @@
         o.push('--name|--n <layoutName>\n');
         o.push('--template|--t <templateName:cwLayout(default)|ngLayout> \n');
         o.push('--package <patch|minor|major> \n');
-        o.push('--register <evolve-layouts-path> \n');        
+        o.push('--register <evolve-layouts-path> \n');
         console.log(o.join(''));
     }
 
@@ -239,6 +239,29 @@
         }
     }
 
+
+    function UpdateReadmeMD(path, layoutsJson) {
+        var output = "#List of layouts\n";
+        for (var layout in layoutsJson) {
+            if (layoutsJson.hasOwnProperty(layout)) {
+                output += "##" + layout +  ": \n";
+                if (layoutsJson[layout].hasOwnProperty("description")) {
+                    output += "description : " + layoutsJson[layout].description +  "\n";
+                }
+                if (layoutsJson[layout].hasOwnProperty("wiki")) {
+                    output += "wiki : " + layoutsJson[layout].wiki +  "\n";
+                }
+                if (layoutsJson[layout].hasOwnProperty("evolve-versions")) {
+                    output += "Compatibility : Evolve " + Object.keys(layoutsJson[layout]["evolve-versions"]) + "\n" ;
+                }
+            }
+        }
+        console.log(output)
+        writeInFile(path + "/README.md",output);
+    }
+
+
+
     // if (options.init)
     if (options.register !== null) {
         if (!fs.existsSync(options.register + "/layouts.json")) {
@@ -259,23 +282,32 @@
                         layoutsJson[layoutToAdd.name] = {};
                         layoutsJson[layoutToAdd.name]["name"] = layoutToAdd.name;
                         layoutsJson[layoutToAdd.name]["repository"] = layoutToAdd.repository.url;
-                        if(layoutToAdd.hasOwnProperty("description")) {
+                        if (layoutToAdd.hasOwnProperty("description")) {
                             layoutsJson[layoutToAdd.name]["description"] = layoutToAdd["description"];
+                        }
+                        if (layoutToAdd.hasOwnProperty("wiki")) {
+                            layoutsJson[layoutToAdd.name]["wiki"] = layoutToAdd["wiki"];
                         }
                         var gitPackageUrl = "https://github.com/casewise/evolve-layouts/raw/master/dist/" + layoutToAdd.name + "/" + layoutToAddPackage;
                         layoutsJson[layoutToAdd.name]["evolve-versions"] = {};
                         layoutsJson[layoutToAdd.name]["evolve-versions"][layoutToAdd["evolve-version"]] = gitPackageUrl;
 
                     } else {
-                        if(layoutToAdd.hasOwnProperty("description")) {
+                        if (layoutToAdd.hasOwnProperty("description")) {
                             layoutsJson[layoutToAdd.name]["description"] = layoutToAdd["description"];
+                        }
+                        if (layoutToAdd.hasOwnProperty("wiki")) {
+                            layoutsJson[layoutToAdd.name]["wiki"] = layoutToAdd["wiki"];
                         }
                         var gitPackageUrl = "https://github.com/casewise/evolve-layouts/raw/master/dist/" + layoutToAdd.name + "/" + layoutToAddPackage;
                         layoutsJson[layoutToAdd.name]["evolve-versions"][layoutToAdd["evolve-version"]] = gitPackageUrl;
                     }
                     fs.copySync("dist/" + layoutToAddPackage, options.register + "/dist/" + layoutToAdd.name + "/" + layoutToAddPackage);
-                    writeInFile(options.register + "/layouts.json", JSON.stringify(layoutsJson,null,4));
+
+                    UpdateReadmeMD(options.register, layoutsJson)
+                    writeInFile(options.register + "/layouts.json", JSON.stringify(layoutsJson, null, 4));
                     console.log("package sucessfully register\nDon't forget to commit and push your modifications in evolve-layouts".green);
+
                 }
             }
         }
