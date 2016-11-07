@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-(function () {
+(function() {
     'use strict';
-    var fs = require('fs'),
+    var fs = require('fs-extra'),
         argv = require('minimist')(process.argv.slice(2)),
         options = {},
         colors = require('colors');
@@ -14,11 +14,11 @@
     // check out npm version --help
     function updateVersion(update, callback) {
         var npm = require('npm');
-        npm.load({}, function (er) {
+        npm.load({}, function(er) {
             if (er) {
                 console.log('error on loading npm'.red, er);
             }
-            npm.commands.version([update], function (err) {
+            npm.commands.version([update], function(err) {
                 if (err) {
                     console.error('error on update version'.red, err);
                     return callback && callback(err);
@@ -45,7 +45,7 @@
 
     function writeInFile(filepath, content) {
         console.info('write in file', filepath);
-        fs.writeFile(filepath, content, function (err) {
+        fs.writeFile(filepath, content, function(err) {
             if (err) {
                 return console.log(err);
             }
@@ -76,13 +76,13 @@
     }
 
     function generateLayout(layoutName, template, callback) {
-        fs.stat(layoutName, function (err) {
+        fs.stat(layoutName, function(err) {
             if (err !== null) {
-                fs.mkdir(layoutName, function (err) {
+                fs.mkdir(layoutName, function(err) {
                     if (err) {
                         console.error(err);
                     } else {
-                        fs.mkdir(layoutName + "/src", function (err) {
+                        fs.mkdir(layoutName + "/src", function(err) {
                             if (err) {
                                 console.error(err);
                             } else {
@@ -116,12 +116,13 @@
         template: argv.template || argv.t || 'cwLayout',
         package: argv.package || null,
         install: argv.install || null,
+        register: argv.register || null,
         init: argv.init || null
     };
 
 
     if (options.name !== null) {
-        generateLayout(options.name, options.template, function () {
+        generateLayout(options.name, options.template, function() {
             console.log('generation done.');
         });
     }
@@ -155,13 +156,13 @@
     if (options.package !== null) {
         options.package = (options.package === true ? 'patch' : options.package);
         console.log('do package', options.package);
-        updateVersion(options.package, function (err) {
+        updateVersion(options.package, function(err) {
             if (!err) {
                 console.log('version has been updated.'.green);
                 var layoutPackage = JSON.parse(fs.readFileSync('package.json', 'utf8'));
                 createDirIfNotExists('dist');
                 var name = ['./dist/', layoutPackage.name, '-v', layoutPackage.version, '-evolve-v', layoutPackage['evolve-version'], '.zip'].join('');
-                zipFolder(name, function () {
+                zipFolder(name, function() {
                     console.log('zip is done'.green);
                 });
             }
@@ -178,7 +179,7 @@
         request({
             url: url,
             json: true
-        }, function (error, response, body) {
+        }, function(error, response, body) {
             if (!error && response.statusCode === 200) {
                 return callback && callback(null, body);
             }
@@ -191,7 +192,7 @@
         request({
             url: fileUrl,
             encoding: null
-        }, function (error, response, body) {
+        }, function(error, response, body) {
             if (!error && response.statusCode === 200) {
                 return callback && callback(null, body);
             }
@@ -206,7 +207,7 @@
             var evolveJson = JSON.parse(fs.readFileSync('./evolve.json', 'utf8'));
             console.log(evolveJson);
 
-            getLayoutsList(function (err, layouts) {
+            getLayoutsList(function(err, layouts) {
                 console.log('get layouts', layouts);
                 for (var layoutName in evolveJson.dependencies) {
                     if (evolveJson.dependencies.hasOwnProperty(layoutName)) {
@@ -216,7 +217,7 @@
                             var fileUrl = layouts[layoutName]['evolve-versions'][evolveJson['evolve-version']];
                             if (fileUrl !== undefined) {
                                 console.log('get file'.green, fileUrl);
-                                getRawFileContent(fileUrl, function (err, data) {
+                                getRawFileContent(fileUrl, function(err, data) {
                                     console.log('get zip data', data);
                                     // var data = fs.readFileSync(name, 'binary');
                                     fs.writeFileSync('./remove_me_later.zip', data, 'binary');
@@ -242,6 +243,39 @@
     }
 
     // if (options.init)
+    if (options.register !== null) {
+        if (!fs.existsSync(options.register + "/layouts.json")) {
+            console.error((options.register + '/layouts.json is missing, impossible to continue').red);
+        } else if (!fs.existsSync("package.json")) {
+            console.error('package.json is missing, impossible to continue'.red);
+        } else {
+            var layoutsJson = JSON.parse(fs.readFileSync(options.register + '/layouts.json', 'utf8'));
+            var layoutToAdd = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
+            if (!(layoutToAdd.hasOwnProperty("name") && layoutToAdd.hasOwnProperty("version") && layoutToAdd.hasOwnProperty("evolve-version"))) {
+                console.log("package.json is not correct".red);
+            } else {
+                var layoutToAddPackage = layoutToAdd.name + "-v" + layoutToAdd.version + "-evolve-v" + layoutToAdd["evolve-version"] + ".zip";
+                if (!fs.existsSync("dist/" + layoutToAddPackage)) {
+                    console.log("no package available for your current version")
+                } else {
+                    if (!layoutsJson.hasOwnProperty(layoutToAdd.name) || layoutsJson.hasOwnProperty(layoutToAdd.name) && !layoutsJson[layoutToAdd.name].hasOwnProperty("evolve-versions")) {
+                        layoutsJson[layoutToAdd.name] = {};
+                        layoutsJson[layoutToAdd.name]["name"] = layoutToAdd.name;
+                        layoutsJson[layoutToAdd.name]["repository"] = layoutToAdd.repository.url;
+                        var gitPackageUrl = "https://github.com/casewise/evolve-layouts/raw/master/dist/" + layoutToAdd.name + "/" + layoutToAddPackage;
+                        layoutsJson[layoutToAdd.name]["evolve-versions"] = {};
+                        layoutsJson[layoutToAdd.name]["evolve-versions"][layoutToAdd["evolve-version"]] = gitPackageUrl;
 
+                    } else {
+                        var gitPackageUrl = "https://github.com/casewise/evolve-layouts/raw/master/dist/" + layoutToAdd.name + "/" + layoutToAddPackage;
+                        layoutsJson[layoutToAdd.name]["evolve-versions"][layoutToAdd["evolve-version"]] = gitPackageUrl;
+                    }
+                    fs.copySync("dist/" + layoutToAddPackage, options.register + "/dist/" + layoutToAdd.name + "/" + layoutToAddPackage);
+                    writeInFile(options.register + "/layouts.json", JSON.stringify(layoutsJson,null,4));
+                    console.log("package sucessfully register\nDon't forget to commit and push your modifications in evolve-layouts".green);
+                }
+            }
+        }
+    }
 
 }());
