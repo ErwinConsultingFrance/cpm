@@ -246,13 +246,13 @@
             if (layoutsJson.hasOwnProperty(layout)) {
                 output += "##" + layout +  ": \n";
                 if (layoutsJson[layout].hasOwnProperty("description")) {
-                    output += "description : " + layoutsJson[layout].description +  "\n";
+                    output += "- " + layoutsJson[layout].description +  "\n";
                 }
                 if (layoutsJson[layout].hasOwnProperty("wiki")) {
-                    output += "wiki : " + layoutsJson[layout].wiki +  "\n";
+                    output += "- " + layoutsJson[layout].wiki +  "\n";
                 }
                 if (layoutsJson[layout].hasOwnProperty("evolve-versions")) {
-                    output += "Compatibility : Evolve " + Object.keys(layoutsJson[layout]["evolve-versions"]) + "\n" ;
+                    output += "- Compatibility : Evolve " + Object.keys(layoutsJson[layout]["evolve-versions"]) + "\n\n" ;
                 }
             }
         }
