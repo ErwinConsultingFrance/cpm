@@ -62,6 +62,7 @@
 
     if (options.package !== null) {
         options.package = (options.package === true ? 'patch' : options.package);
+        cwpm.markDown.exportReadmeMDtoPDF();
         console.log('do package', options.package);
         updateVersion(options.package, function(err) {
             if (!err) {
@@ -100,27 +101,6 @@
 
             },null);
         }
-    }
-
-
-    function UpdateReadmeMD(path, layoutsJson) {
-        var output = "#List of layouts\n";
-        for (var layout in layoutsJson) {
-            if (layoutsJson.hasOwnProperty(layout)) {
-                output += "##" + layout + ": \n";
-                if (layoutsJson[layout].hasOwnProperty("description")) {
-                    output += "- " + layoutsJson[layout].description + "\n";
-                }
-                if (layoutsJson[layout].hasOwnProperty("wiki")) {
-                    output += "- " + layoutsJson[layout].wiki + "\n";
-                }
-                if (layoutsJson[layout].hasOwnProperty("evolve-versions")) {
-                    output += "- Compatibility : Evolve " + Object.keys(layoutsJson[layout]["evolve-versions"]) + "\n\n";
-                }
-            }
-        }
-        console.log(output)
-        cwpm.file.writeInFile(path + "/README.md", output);
     }
 
 
@@ -167,7 +147,7 @@
                     }
                     fs.copySync("dist/" + layoutToAddPackage, options.register + "/dist/" + layoutToAdd.name + "/" + layoutToAddPackage);
 
-                    UpdateReadmeMD(options.register, layoutsJson)
+                    cwpm.markDown.UpdateReadmeMD(options.register, layoutsJson)
                     cwpm.file.writeInFile(options.register + "/layouts.json", JSON.stringify(layoutsJson, null, 4));
                     console.log("package sucessfully register\nDon't forget to commit and push your modifications in evolve-layouts".green);
 
