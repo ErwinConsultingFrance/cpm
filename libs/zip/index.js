@@ -33,9 +33,8 @@ function UnzipLayout(err, data,layoutName) {
     cwpmFile.createDirIfNotExists("./webDesigner/custom");
     cwpmFile.createDirIfNotExists("./webDesigner/custom/Marketplace");
     cwpmFile.createDirIfNotExists("./webDesigner/custom/Marketplace/libs/");
-    cwpmFile.createDirIfNotExists("./webDesigner/custom/Marketplace/libs/cwLayouts");
-    cwpmFile.createDirIfNotExists("./webDesigner/custom/Marketplace/libs/cwLayouts/" + layoutName);
-    zip.extractAllTo("./webDesigner/custom/Marketplace/libs/cwLayouts/" + layoutName, true);
+    cwpmFile.createDirIfNotExists("./webDesigner/custom/Marketplace/libs/" + layoutName);
+    zip.extractAllTo("./webDesigner/custom/Marketplace/libs/" + layoutName, true);
     console.log((layoutName + " extracted").green);
 }
 
