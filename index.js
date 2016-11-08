@@ -5,7 +5,8 @@
     var fs = require('fs-extra'),
         argv = require('minimist')(process.argv.slice(2)),
         options = {},
-        colors = require('colors');
+        colors = require('colors'),
+        cwpm = require('./libs');
     console.log(argv);
 
     // check out npm version --help
@@ -36,90 +37,6 @@
         console.log(o.join(''));
     }
 
-    function touch(filepath) {
-        console.info('touch file', filepath);
-        fs.closeSync(fs.openSync(filepath, 'w'));
-    }
-
-    function writeInFile(filepath, content) {
-        console.info('write in file', filepath);
-        fs.writeFile(filepath, content, function(err) {
-            if (err) {
-                return console.log(err);
-            }
-        });
-    }
-
-    function getJsonConfig(layoutName) {
-        return {
-            'Name': layoutName,
-            'DisplayName': layoutName,
-            'Description': layoutName,
-            'JavaScriptClassName': layoutName
-        };
-    }
-
-    function getPackageJsonConfig(layoutName) {
-        return {
-            'name': layoutName,
-            'description': layoutName,
-            'version': '0.0.0',
-            'main': '',
-            'scripts': {
-                'test': ''
-            },
-            'repository': {
-                'type': "git",
-                'url': ''
-            },
-            'author': '',
-            'license': 'MIT',
-            'bugs': {
-                'url': ""
-            },
-            'homepage': "",
-            'wiki': "",
-            'evolve-version': "0.0"
-        };
-    }
-
-    function getTemplateJsContent(template, layoutName) {
-        var fileContent = fs.readFileSync(__dirname + "/templates/template." + template + ".js", 'utf8');
-        fileContent = fileContent.replace(/cwTemplateLayout/g, layoutName);
-        return fileContent;
-    }
-
-    function generateLayout(layoutName, template, callback) {
-        fs.stat(layoutName, function(err) {
-            if (err !== null) {
-                fs.mkdir(layoutName, function(err) {
-                    if (err) {
-                        console.error(err);
-                    } else {
-                        fs.mkdir(layoutName + "/src", function(err) {
-                            if (err) {
-                                console.error(err);
-                            } else {
-                                writeInFile(layoutName + "/src/" + layoutName + ".js", getTemplateJsContent(template, layoutName));
-                                touch(layoutName + "/src/" + layoutName + ".less");
-                                touch(layoutName + "/src/" + layoutName + ".css");
-                                touch(layoutName + "/src/" + layoutName + ".min.css");
-                                writeInFile(layoutName + "/src/" + layoutName + ".layout.config.json", JSON.stringify(getJsonConfig(layoutName)));
-                                writeInFile(layoutName + "/package.json", JSON.stringify(getPackageJsonConfig(layoutName)));
-
-                                if (template === "ngLayout") {
-                                    writeInFile(layoutName + "/" + layoutName + ".ng.html", '<div ng-controller="' + layoutName + '"></div>');
-                                }
-                                return callback && callback();
-                            }
-                        });
-                    }
-                });
-            } else {
-                console.log("layout already exist in folder");
-            }
-        });
-    }
 
     if (Object.keys(argv).length === 1) {
         outputUsage();
@@ -136,36 +53,12 @@
 
 
     if (options.name !== null) {
-        generateLayout(options.name, options.template, function() {
+        cwpm.generateLayout(options.name, options.template, function() {
             console.log('generation done.');
         });
     }
-    var AdmZip = require('adm-zip');
 
-    function zipFolder(outFile, callback) {
-        try {
-            var zip = new AdmZip();
-            fs.readdir('./src', (err, files) => {
-                files.forEach(file => {
-                    var fileName = './src/' + file;
-                    console.log('write in zip file', file, fileName);
-                    zip.addFile(file, new Buffer(fs.readFileSync(fileName, 'utf8')), "no comment", "no attribute");
-                });
-                var willSendthis = zip.toBuffer();
-                zip.writeZip(outFile);
-                return callback && callback();
-            });
-        } catch (err) {
-            console.log(err);
-        }
 
-    }
-
-    function createDirIfNotExists(dir) {
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir);
-        }
-    }
 
     if (options.package !== null) {
         options.package = (options.package === true ? 'patch' : options.package);
@@ -174,9 +67,9 @@
             if (!err) {
                 console.log('version has been updated.'.green);
                 var layoutPackage = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-                createDirIfNotExists('dist');
+                cwpm.file.createDirIfNotExists('dist');
                 var name = ['./dist/', layoutPackage.name, '-v', layoutPackage.version, '-evolve-v', layoutPackage['evolve-version'], '.zip'].join('');
-                zipFolder(name, function() {
+                cwpm.zip.zipFolder(name, function() {
                     console.log('zip is done'.green);
                 });
             }
@@ -184,56 +77,12 @@
     }
 
 
-    var request = require("request")
-
-
-    function getLayoutsList(callback) {
-        var url = "https://raw.githubusercontent.com/casewise/evolve-layouts/master/layouts.json?" + Math.random();
-        console.log(url);
-        request({
-            url: url,
-            json: true
-        }, function(error, response, body) {
-            if (!error && response.statusCode === 200) {
-                return callback && callback(null, body);
-            }
-        })
-    }
-
-
-    function getRawFileContent(fileUrl, callback,paramCallback) {
-        console.log(fileUrl);
-        request({
-            url: fileUrl,
-            encoding: null
-        }, function(error, response, body) {
-            if (!error && response.statusCode === 200) {
-                return callback && callback(null, body,paramCallback);
-            }
-        })
-    }
-
-    function UnzipLayout(err, data,layoutName) {
-        // var data = fs.readFileSync(name, 'binary');
-        fs.writeFileSync('./remove_me_later.zip', data, 'binary');
-        var zip = new AdmZip("./remove_me_later.zip");
-        var zipEntries = zip.getEntries(); // an array of ZipEntry records
-        createDirIfNotExists("./webDesigner");
-        createDirIfNotExists("./webDesigner/custom");
-        createDirIfNotExists("./webDesigner/custom/Marketplace");
-        createDirIfNotExists("./webDesigner/custom/Marketplace/libs/");
-        createDirIfNotExists("./webDesigner/custom/Marketplace/libs/cwLayouts");
-        createDirIfNotExists("./webDesigner/custom/Marketplace/libs/cwLayouts/" + layoutName);
-        zip.extractAllTo("./webDesigner/custom/Marketplace/libs/cwLayouts/" + layoutName, true);
-        console.log((layoutName + " extracted").green);
-    }
-
     if (options.install !== null) {
         if (!fs.existsSync("./evolve.json")) {
             console.error('evolve.json is missing, impossible to continue'.red);
         } else {
             var evolveJson = JSON.parse(fs.readFileSync('./evolve.json', 'utf8'));
-            getLayoutsList(function(err, layouts) {
+            cwpm.url.getJsonFile("https://raw.githubusercontent.com/casewise/evolve-layouts/master/layouts.json?" + Math.random(),function(err, layouts) {
                 for (var layoutName in evolveJson.dependencies) {
                     if (evolveJson.dependencies.hasOwnProperty(layoutName)) {
                         console.log("get layout : " + layoutName);
@@ -241,7 +90,7 @@
                             var fileUrl = layouts[layoutName]['evolve-versions'][evolveJson['evolve-version']];
                             if (fileUrl !== undefined) {
                                 console.log(('get file ' + fileUrl).green);
-                                getRawFileContent(fileUrl,UnzipLayout,layoutName); 
+                                cwpm.url.getRawFileContent(fileUrl, cwpm.zip.UnzipLayout, layoutName);
                             } else {
                                 console.error(['impossible to find ', layoutName, ' for current version of evolve which is ', evolveJson['evolve-version']].join('').red);
                             }
@@ -249,7 +98,7 @@
                     }
                 }
 
-            });
+            },null);
         }
     }
 
@@ -271,7 +120,7 @@
             }
         }
         console.log(output)
-        writeInFile(path + "/README.md", output);
+        cwpm.file.writeInFile(path + "/README.md", output);
     }
 
 
@@ -319,7 +168,7 @@
                     fs.copySync("dist/" + layoutToAddPackage, options.register + "/dist/" + layoutToAdd.name + "/" + layoutToAddPackage);
 
                     UpdateReadmeMD(options.register, layoutsJson)
-                    writeInFile(options.register + "/layouts.json", JSON.stringify(layoutsJson, null, 4));
+                    cwpm.file.writeInFile(options.register + "/layouts.json", JSON.stringify(layoutsJson, null, 4));
                     console.log("package sucessfully register\nDon't forget to commit and push your modifications in evolve-layouts".green);
 
                 }
