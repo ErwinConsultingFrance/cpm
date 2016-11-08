@@ -6,10 +6,7 @@
         argv = require('minimist')(process.argv.slice(2)),
         options = {},
         colors = require('colors');
-    // zip = new require('node-zip')();
-
     console.log(argv);
-
 
     // check out npm version --help
     function updateVersion(update, callback) {
@@ -22,7 +19,6 @@
                 if (err) {
                     console.error('error on update version'.red, err);
                     return callback && callback(err);
-
                 }
                 return callback && callback(null);
             });
@@ -205,18 +201,32 @@
     }
 
 
-    function getRawFileContent(fileUrl, callback) {
+    function getRawFileContent(fileUrl, callback,paramCallback) {
         console.log(fileUrl);
         request({
             url: fileUrl,
             encoding: null
         }, function(error, response, body) {
             if (!error && response.statusCode === 200) {
-                return callback && callback(null, body);
+                return callback && callback(null, body,paramCallback);
             }
         })
     }
 
+    function UnzipLayout(err, data,layoutName) {
+        // var data = fs.readFileSync(name, 'binary');
+        fs.writeFileSync('./remove_me_later.zip', data, 'binary');
+        var zip = new AdmZip("./remove_me_later.zip");
+        var zipEntries = zip.getEntries(); // an array of ZipEntry records
+        createDirIfNotExists("./webDesigner");
+        createDirIfNotExists("./webDesigner/custom");
+        createDirIfNotExists("./webDesigner/custom/Marketplace");
+        createDirIfNotExists("./webDesigner/custom/Marketplace/libs/");
+        createDirIfNotExists("./webDesigner/custom/Marketplace/libs/cwLayouts");
+        createDirIfNotExists("./webDesigner/custom/Marketplace/libs/cwLayouts/" + layoutName);
+        zip.extractAllTo("./webDesigner/custom/Marketplace/libs/cwLayouts/" + layoutName, true);
+        console.log((layoutName + " extracted").green);
+    }
 
     if (options.install !== null) {
         if (!fs.existsSync("./evolve.json")) {
@@ -230,20 +240,8 @@
                         if (layouts[layoutName] && layouts[layoutName]['evolve-versions']) {
                             var fileUrl = layouts[layoutName]['evolve-versions'][evolveJson['evolve-version']];
                             if (fileUrl !== undefined) {
-                                console.log(('get file' + fileUrl).green);
-                                getRawFileContent(fileUrl, function(err, data) {
-                                    // var data = fs.readFileSync(name, 'binary');
-                                    fs.writeFileSync('./remove_me_later.zip', data, 'binary');
-                                    var zip = new AdmZip("./remove_me_later.zip");
-                                    var zipEntries = zip.getEntries(); // an array of ZipEntry records
-                                    createDirIfNotExists("./webDesigner");
-                                    createDirIfNotExists("./webDesigner/custom");
-                                    createDirIfNotExists("./webDesigner/custom/Marketplace");
-                                    createDirIfNotExists("./webDesigner/custom/Marketplace/libs/");
-                                    createDirIfNotExists("./webDesigner/custom/Marketplace/libs/cwLayouts");
-                                    createDirIfNotExists("./webDesigner/custom/Marketplace/libs/cwLayouts/" + layoutName);
-                                    zip.extractAllTo("./webDesigner/custom/Marketplace/libs/cwLayouts/" + layoutName, true);
-                                });
+                                console.log(('get file ' + fileUrl).green);
+                                getRawFileContent(fileUrl,UnzipLayout,layoutName); 
                             } else {
                                 console.error(['impossible to find ', layoutName, ' for current version of evolve which is ', evolveJson['evolve-version']].join('').red);
                             }
