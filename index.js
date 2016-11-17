@@ -9,22 +9,7 @@
         cwpm = require('./libs');
     console.log(argv);
 
-    // check out npm version --help
-    function updateVersion(update, callback) {
-        var npm = require('npm');
-        npm.load({}, function(er) {
-            if (er) {
-                console.log('error on loading npm'.red, er);
-            }
-            npm.commands.version([update], function(err) {
-                if (err) {
-                    console.error('error on update version'.red, err);
-                    return callback && callback(err);
-                }
-                return callback && callback(null);
-            });
-        });
-    }
+
 
     function outputUsage() {
         var o = [];
@@ -58,23 +43,9 @@
         });
     }
 
-
-
     if (options.package !== null) {
         options.package = (options.package === true ? 'patch' : options.package);
-        cwpm.markDown.exportReadmeMDtoPDF();
-        console.log('do package', options.package);
-        updateVersion(options.package, function(err) {
-            if (!err) {
-                console.log('version has been updated.'.green);
-                var layoutPackage = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-                cwpm.file.createDirIfNotExists('dist');
-                var name = ['./dist/', layoutPackage.name, '-v', layoutPackage.version, '-evolve-v', layoutPackage['evolve-version'], '.zip'].join('');
-                cwpm.zip.zipFolder(name, function() {
-                    console.log('zip is done'.green);
-                });
-            }
-        });
+        cwpm.DoPackage(options.package);
     }
 
 

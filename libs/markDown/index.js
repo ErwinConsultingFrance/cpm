@@ -25,9 +25,11 @@ function UpdateReadmeMD(path, layoutsJson) {
 }
 
 function exportReadmeMDtoPDF() {
-	markdownpdf().from("README.md").to("Howto.pdf", function () {
-		console.log("Done")
-	})
+    if (fs.existsSync("./README.md")) {
+    	markdownpdf().from("README.md").to("Howto.pdf", function () {
+    		console.log("Done")
+    	})
+    }
 }
 
 

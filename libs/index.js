@@ -4,7 +4,8 @@ var zip = require('./zip')
 var url = require('./url')
 var markDown = require('./markDown')
 var layout = require('./layout')
-
+var repository = require('./repository')
+var package = require('./package')
 
 cwpm["file"] = {};
 Object.keys(file).forEach(function (key) {
@@ -26,8 +27,17 @@ Object.keys(markDown).forEach(function (key) {
   cwpm.markDown[key] = markDown[key]
 })
 
+cwpm["repository"] = {};
+Object.keys(repository).forEach(function (key) {
+  cwpm.repository[key] = repository[key]
+})
+
 Object.keys(layout).forEach(function (key) {
   cwpm[key] = layout[key]
+})
+
+Object.keys(package).forEach(function (key) {
+  cwpm[key] = package[key]
 })
 
 module.exports = cwpm

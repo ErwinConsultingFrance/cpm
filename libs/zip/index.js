@@ -1,9 +1,9 @@
 'use strict';
 
-var cwpmFile = require('../file'),
-colors = require('colors');
+var cwpmFile = require('../file');
+var colors = require('colors');
 var AdmZip = require('adm-zip');
-var fs = require('fs-extra')
+var fs = require('fs-extra');
 
 function zipFolder(outFile, callback) {
     try {
