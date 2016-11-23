@@ -21,7 +21,6 @@ function BuildPackage(err) {
 
 
 function DoPackage(optionsPackage) {
-    cwpmMarkDown.exportReadmeMDtoPDF(optionsPackage);
     console.log('do package', optionsPackage);
     cwpmRepository.updateVersion(optionsPackage, BuildPackage);
 }

@@ -24,7 +24,6 @@
   "dependencies": {
     "adm-zip": "^0.4.7",
     "colors": "^1.1.2",
-    "exif-parser": "^0.1.9",
     "find-versions": "^2.0.0",
     "fs-extra": "^1.0.0",
     "markdown-pdf": "^7.0.0",
@@ -33,7 +32,6 @@
     "npm": "^3.10.9",
     "request": "^2.75.0",
     "semver": "^5.3.0",
-    "simple-exiftool": "^1.1.0",
     "win-version-info": "^1.0.1"
   },
   "gitHead": "9d1748603a2ab931e1f0bb7c998151d6d6fe2381",
