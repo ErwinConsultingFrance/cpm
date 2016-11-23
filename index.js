@@ -50,31 +50,8 @@
 
 
     if (options.install !== null) {
-        if (!fs.existsSync("./evolve.json")) {
-            console.error('evolve.json is missing, impossible to continue'.red);
-        } else {
-            var evolveJson = JSON.parse(fs.readFileSync('./evolve.json', 'utf8'));
-            cwpm.url.getJsonFile("https://raw.githubusercontent.com/casewise/evolve-layouts/master/layouts.json?" + Math.random(),function(err, layouts) {
-                for (var layoutName in evolveJson.dependencies) {
-                    if (evolveJson.dependencies.hasOwnProperty(layoutName)) {
-                        console.log("get layout : " + layoutName);
-                        if (layouts[layoutName] && layouts[layoutName]['evolve-versions']) {
-                            var fileUrl = layouts[layoutName]['evolve-versions'][evolveJson['evolve-version']];
-                            if (fileUrl !== undefined) {
-                                console.log(('get file ' + fileUrl).green);
-                                cwpm.url.getRawFileContent(fileUrl, cwpm.zip.UnzipLayout, layoutName);
-                            } else {
-                                console.error(['impossible to find ', layoutName, ' for current version of evolve which is ', evolveJson['evolve-version']].join('').red);
-                            }
-                        }
-                    }
-                }
-
-            },null);
-        }
+        cwpm.install(options.install);
     }
-
-
 
     // if (options.init)
     if (options.register !== null) {
