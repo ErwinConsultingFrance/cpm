@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-(function() {
+(function () {
     'use strict';
     var fs = require('fs-extra'),
         argv = require('minimist')(process.argv.slice(2)),
@@ -38,7 +38,7 @@
 
 
     if (options.name !== null) {
-        cwpm.generateLayout(options.name, options.template, function() {
+        cwpm.generateLayout(options.name, options.template, function () {
             console.log('generation done.');
         });
     }
@@ -65,7 +65,7 @@
             if (!(layoutToAdd.hasOwnProperty("name") && layoutToAdd.hasOwnProperty("version") && layoutToAdd.hasOwnProperty("evolve-version"))) {
                 console.log("package.json is not correct".red);
             } else {
-                var layoutToAddPackage = layoutToAdd.name + '-v' + layoutToAdd.version + "-evolve-v" + layoutToAdd["evolve-version"].replace(/ /g,'') + ".zip";
+                var layoutToAddPackage = layoutToAdd.name + '-v' + layoutToAdd.version + "-evolve-v" + layoutToAdd["evolve-version"].replace(/ /g, '') + ".zip";
                 if (!fs.existsSync("dist/" + layoutToAddPackage)) {
                     console.log("no package available for your current version");
                 } else {

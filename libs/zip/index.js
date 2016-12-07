@@ -8,6 +8,17 @@ var fs = require('fs-extra');
 function zipFolder(outFile, callback) {
     try {
         var zip = new AdmZip();
+
+        function loadDefaultFiles() {
+            // ['package.json', 'Help.pdf', 'Help.md']
+            ['package.json', 'Help.md'].forEach(function (fileName) {
+                console.log('write in zip file', fileName);
+                zip.addFile(fileName, new Buffer(fs.readFileSync(fileName)), "no comment", "no attribute");
+            });
+            zip.writeZip(outFile);
+            return callback && callback();
+        }
+
         fs.readdir('./src', (err, files) => {
             files.forEach(file => {
                 var fileName = './src/' + file;
@@ -15,16 +26,16 @@ function zipFolder(outFile, callback) {
                 zip.addFile(file, new Buffer(fs.readFileSync(fileName, 'utf8')), "no comment", "no attribute");
             });
             var willSendthis = zip.toBuffer();
-            zip.writeZip(outFile);
-            return callback && callback();
+            loadDefaultFiles();
         });
+
     } catch (err) {
         console.log(err);
     }
 
 }
 
-function UnzipLayout(err, data,layoutName) {
+function UnzipLayout(err, data, layoutName) {
     // var data = fs.readFileSync(name, 'binary');
     fs.writeFileSync('./remove_me_later.zip', data, 'binary');
     var zip = new AdmZip("./remove_me_later.zip");
