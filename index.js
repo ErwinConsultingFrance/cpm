@@ -65,7 +65,7 @@
             if (!(layoutToAdd.hasOwnProperty("name") && layoutToAdd.hasOwnProperty("version") && layoutToAdd.hasOwnProperty("evolve-version"))) {
                 console.log("package.json is not correct".red);
             } else {
-                var layoutToAddPackage = layoutToAdd.name + '-v' + layoutToAdd.version + "-evolve-v" + layoutToAdd["evolve-version"] + ".zip";
+                var layoutToAddPackage = layoutToAdd.name + '-v' + layoutToAdd.version + "-evolve-v" + layoutToAdd["evolve-version"].replace(/ /g,'') + ".zip";
                 if (!fs.existsSync("dist/" + layoutToAddPackage)) {
                     console.log("no package available for your current version")
                 } else {

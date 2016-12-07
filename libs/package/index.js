@@ -8,17 +8,17 @@ var cwpmFile = require('../file');
 
 function BuildPackage(err) {
     if (!err) {
+        var layoutPackage, version, name;
         console.log('version has been updated.'.green);
-        var layoutPackage = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+        layoutPackage = JSON.parse(fs.readFileSync('package.json', 'utf8'));
         cwpmFile.createDirIfNotExists('dist');
-        var name = ['./dist/', layoutPackage.name, '-v', layoutPackage.version, '-evolve-v', layoutPackage['evolve-version'], '.zip'].join('');
-        cwpmZip.zipFolder(name, function() {
+        version = layoutPackage['evolve-version'].replace(/ /g, '');
+        name = ['./dist/', layoutPackage.name, '-v', layoutPackage.version, '-evolve-v', version, '.zip'].join('');
+        cwpmZip.zipFolder(name, function () {
             console.log('zip is done'.green);
         });
     }
 }
-
-
 
 function DoPackage(optionsPackage) {
     console.log('do package', optionsPackage);

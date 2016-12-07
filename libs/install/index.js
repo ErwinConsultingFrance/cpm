@@ -10,7 +10,7 @@ var findVersions = require('find-versions');
 
 function install(optionsInstall) {
     cwpmURL.getJsonFile("https://raw.githubusercontent.com/casewise/evolve-layouts/master/layouts.json?" + Math.random(), function(err, layouts) {
-        if (optionsInstall != true && !layouts.hasOwnProperty(optionsInstall)) {
+        if (optionsInstall !== true && !layouts.hasOwnProperty(optionsInstall)) {
             console.error('the layout you try to install do not exist'.red);
             listALLlayouts(layouts);
             return;
@@ -63,8 +63,9 @@ function findSatisfayingVersion(layout, versionToSatisfy) {
         if (layout.hasOwnProperty(version)) {
             var sVersions = findVersions(version, {loose: true});        
             var sVersionToSatisfys = findVersions(versionToSatisfy, {loose: true});
-            if(sVersions[0] && sVersionToSatisfys[0] && semver.minor(sVersionToSatisfys[0]) == semver.minor(sVersions[0])) {
-                return layout[version]; 
+            console.log('check version ', sVersionToSatisfys, ' satisfies ', sVersions);
+            if (semver.satisfies(sVersionToSatisfys.toString(), sVersions) === true){
+                return layout[version];
             }
         }
     }
