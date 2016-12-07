@@ -36,6 +36,7 @@ function UnzipLayout(err, data,layoutName) {
     cwpmFile.createDirIfNotExists("./webDesigner/custom/Marketplace/libs/" + layoutName);
     zip.extractAllTo("./webDesigner/custom/Marketplace/libs/" + layoutName, true);
     console.log((layoutName + " extracted").green);
+    cwpmFile.removeFile('./remove_me_later.zip');
 }
 
 module.exports = {

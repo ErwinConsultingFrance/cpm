@@ -9,7 +9,7 @@ function touch(filepath) {
 
 function writeInFile(filepath, content) {
     console.info('write in file', filepath);
-    fs.writeFile(filepath, content, function(err) {
+    fs.writeFile(filepath, content, function (err) {
         if (err) {
             return console.log(err);
         }
@@ -22,10 +22,16 @@ function createDirIfNotExists(dir) {
     }
 }
 
+function removeFile(file) {
+    if (fs.existsSync(file)) {
+        fs.unlinkSync(file);
+    }
+}
+
 
 module.exports = {
     touch,
     writeInFile,
-    createDirIfNotExists
+    createDirIfNotExists,
+    removeFile
 }
-

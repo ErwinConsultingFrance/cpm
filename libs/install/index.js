@@ -9,7 +9,7 @@ var semver = require('semver');
 var findVersions = require('find-versions');
 
 function install(optionsInstall) {
-    cwpmURL.getJsonFile("https://raw.githubusercontent.com/casewise/evolve-layouts/master/layouts.json?" + Math.random(), function(err, layouts) {
+    cwpmURL.getJsonFile("https://raw.githubusercontent.com/casewise/evolve-layouts/master/layouts.json?" + Math.random(), function (err, layouts) {
         if (optionsInstall !== true && !layouts.hasOwnProperty(optionsInstall)) {
             console.error('the layout you try to install do not exist'.red);
             listALLlayouts(layouts);
@@ -59,12 +59,14 @@ function installLayouts(evolveJson, layouts) {
 };
 
 function findSatisfayingVersion(layout, versionToSatisfy) {
+    console.log(layout);
     for (var version in layout) {
         if (layout.hasOwnProperty(version)) {
-            var sVersions = findVersions(version, {loose: true});        
-            var sVersionToSatisfys = findVersions(versionToSatisfy, {loose: true});
-            console.log('check version ', sVersionToSatisfys, ' satisfies ', sVersions);
-            if (semver.satisfies(sVersionToSatisfys.toString(), sVersions) === true){
+            var sVersionToSatisfys = findVersions(versionToSatisfy, {
+                loose: true
+            });
+            console.log('check version ', sVersionToSatisfys.toString(), ' satisfies ', version, semver.satisfies(sVersionToSatisfys.toString(), version));
+            if (semver.satisfies(sVersionToSatisfys.toString(), version) === true) {
                 return layout[version];
             }
         }
@@ -75,10 +77,10 @@ function findSatisfayingVersion(layout, versionToSatisfy) {
 
 function createEvolveJson(layout) {
     var evolveJson = {};
-    evolveJson["evolve-version"] = "4.0";//getEvolveVersion();
+    evolveJson["evolve-version"] = "4.0"; //getEvolveVersion();
     console.log("don't forget to change evolve version in evolve.json,by default evolve version is 4.0");
     evolveJson["dependencies"] = {};
-    if(layout !== true) {
+    if (layout !== true) {
         evolveJson.dependencies[layout] = "^0.0.1";
     }
     return evolveJson;
