@@ -5,7 +5,6 @@ var colors = require('colors');
 var AdmZip = require('adm-zip');
 var fs = require('fs-extra');
 fs.rmrfSync = require('fs-extra').rmrfSync;
-var ncp = require('ncp').ncp;
 var archiver = require('archiver');
 
 function zipFolder(outFile, callback) {
