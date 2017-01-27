@@ -42,7 +42,8 @@ function zipFolder(outFile, callback) {
     if (fs.existsSync('fonts')) {
         archive.directory('fonts/');
     }        
-    archive.file('Help.pdf', { name: 'Help.pdf' });  
+    archive.file('Help_layout.pdf', { name: 'Help_layout.pdf' });  
+    archive.file('Help_cpm.pdf', { name: 'Help_cpm.pdf' });   
     // finalize the archive (ie we are done appending files but streams have to finish yet) 
     archive.finalize();
 }

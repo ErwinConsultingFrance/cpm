@@ -1,6 +1,6 @@
 'use strict';
 
-var fs = require('fs-extra')
+var fs = require('fs-extra');
 
 function touch(filepath) {
     console.info('touch file', filepath);
@@ -8,12 +8,7 @@ function touch(filepath) {
 }
 
 function writeInFile(filepath, content) {
-    console.info('write in file', filepath);
-    fs.writeFile(filepath, content, function (err) {
-        if (err) {
-            return console.log(err);
-        }
-    });
+    fs.writeFileSync(filepath, content);
 }
 
 function createDirIfNotExists(dir) {
@@ -34,4 +29,4 @@ module.exports = {
     writeInFile,
     createDirIfNotExists,
     removeFile
-}
+};

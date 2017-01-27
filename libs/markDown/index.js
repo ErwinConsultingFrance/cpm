@@ -20,18 +20,18 @@ function UpdateReadmeMD(path, layoutsJson) {
             }
         }
     }
-    console.log(output)
+    console.log(output);
     cwpmFile.writeInFile(path + "/README.md", output);
 }
 
 function exportReadmeMDtoPDF(fileName, callback) {
     if (fs.existsSync(fileName)) {
-        markdownpdf().from(fileName).to("Help.pdf", function () {
-            console.log("Documentation Created.");
+        markdownpdf().from(fileName).to(fileName.replace("md","pdf"), function () {
+            console.log("Documentation " + fileName.replace("md","pdf") + " Created");
             return callback && callback();
-        })
+        });
     } else {
-        console.log('Impossible to find Help.md'.red);
+        console.log(('Impossible to find ' + fileName).red);
         return callback && callback();
     }
 }
@@ -40,4 +40,4 @@ function exportReadmeMDtoPDF(fileName, callback) {
 module.exports = {
     exportReadmeMDtoPDF,
     UpdateReadmeMD,
-}
+};
