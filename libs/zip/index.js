@@ -30,6 +30,9 @@ function zipFolder(outFile, callback) {
      // pipe archive data to the file 
     archive.pipe(output);
 
+    if (fs.existsSync('angularHTMLayout')) {
+        archive.directory('angularHTMLayout/');
+    }
     if (fs.existsSync('external')) {
         archive.directory('external/');
     }
@@ -72,7 +75,7 @@ function UnzipLayout(err, data, layoutName) {
         fs.readdir(destination + '/external', function(err, items) {
             console.log("adding sync libs : " + items);
             fs.copySync(destination + '/external',"webDesigner/js/external");
-            fs.removeSync(destination  + '/external',"webDesigner/js/external");
+            fs.removeSync(destination  + '/external');
         });
         
     }
@@ -81,16 +84,16 @@ function UnzipLayout(err, data, layoutName) {
         fs.readdir(destination + '/modules', function(err, items) {
             console.log("adding async libs : " + items);
             fs.copySync(destination + '/modules',"webDesigner/libs/modules");
-            fs.removeSync(destination + '/modules',"webDesigner/libs/modules");
+            fs.removeSync(destination + '/modules');
         });
         
     }
 
-    if (fs.existsSync(destination + '/fonts')) {
-        fs.readdir(destination + '/fonts', function(err, items) {
-            console.log("adding fonts libs : " + items);
-            fs.copySync(destination + '/fonts',"webDesigner/fonts");
-            fs.removeSync(destination + '/fonts',"webDesigner/fonts");
+    if (fs.existsSync(destination + '/angularHTMLayout')) {
+        fs.readdir(destination + '/angularHTMLayout', function(err, items) {
+            console.log("adding angularHtmlTemplate libs : " + items);
+            fs.copySync(destination + '/angularHTMLayout',"../../data/Common/html/angularLayouts");
+            fs.removeSync(destination + '/angularHTMLayout');
         });
     }
 }
