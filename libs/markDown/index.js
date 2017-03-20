@@ -5,10 +5,10 @@ var cwpmFile = require('../file'),
 
 
 function UpdateReadmeMD(path, layoutsJson) {
-    var output = "#List of layouts\n";
+    var output = "# List of layouts\n";
     for (var layout in layoutsJson) {
         if (layoutsJson.hasOwnProperty(layout)) {
-            output += "##" + layout + ": \n";
+            output += "## " + layout + ": \n";
             if (layoutsJson[layout].hasOwnProperty("description") && layoutsJson[layout].description != "") {
                 output += "- " + layoutsJson[layout].description + "\n";
             }
