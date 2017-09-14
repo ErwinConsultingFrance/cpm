@@ -79,7 +79,7 @@
                         if (layoutToAdd.hasOwnProperty("wiki")) {
                             layoutsJson[layoutToAdd.name]["wiki"] = layoutToAdd["wiki"];
                         }
-                        var gitPackageUrl = "https://github.com/casewise/evolve-layouts/raw/master/dist/" + layoutToAdd.name + "/" + layoutToAddPackage;
+                        var gitPackageUrl = "https://github.com/ErwinConsultingFrance/evolve-layouts/raw/master/dist/" + layoutToAdd.name + "/" + layoutToAddPackage;
                         layoutsJson[layoutToAdd.name]["evolve-versions"] = {};
                         layoutsJson[layoutToAdd.name]["evolve-versions"][layoutToAdd["evolve-version"]] = gitPackageUrl;
 
@@ -90,12 +90,12 @@
                         if (layoutToAdd.hasOwnProperty("wiki")) {
                             layoutsJson[layoutToAdd.name]["wiki"] = layoutToAdd["wiki"];
                         }
-                        var gitPackageUrl = "https://github.com/casewise/evolve-layouts/raw/master/dist/" + layoutToAdd.name + "/" + layoutToAddPackage;
+                        var gitPackageUrl = "https://github.com/ErwinConsultingFrance/evolve-layouts/raw/master/dist/" + layoutToAdd.name + "/" + layoutToAddPackage;
                         layoutsJson[layoutToAdd.name]["evolve-versions"][layoutToAdd["evolve-version"]] = gitPackageUrl;
                     }
                     fs.copySync("dist/" + layoutToAddPackage, options.register + "/dist/" + layoutToAdd.name + "/" + layoutToAddPackage);
 
-                    cwpm.markDown.UpdateReadmeMD(options.register, layoutsJson)
+                    cwpm.markDown.UpdateReadmeMD(options.register, layoutsJson);
                     cwpm.file.writeInFile(options.register + "/layouts.json", JSON.stringify(layoutsJson, null, 4));
                     console.log("package sucessfully register\nDon't forget to commit and push your modifications in evolve-layouts".green);
 

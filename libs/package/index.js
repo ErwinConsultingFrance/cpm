@@ -39,7 +39,7 @@ function BuildPackage(err) {
                 }
             });
         });
-        request("https://github.com/casewise/cpm/wiki/Home.md", function (err, res, body) {
+        request("https://github.com/ErwinConsultingFrance/cpm/wiki/Home.md", function (err, res, body) {
             cwpmFile.writeInFile('./Help_cpm.md', body);
             cwpmMarkDown.exportReadmeMDtoPDF('./Help_cpm.md', function () {
                 callback = callback - 1;
