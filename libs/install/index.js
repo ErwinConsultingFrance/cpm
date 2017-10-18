@@ -8,8 +8,8 @@ var cwpmURL = require('../url');
 var semver = require('semver');
 var findVersions = require('find-versions');
 
-function install(optionsInstall) {
-    cwpmURL.getJsonFile("https://raw.githubusercontent.com/ErwinConsultingFrance/evolve-layouts/master/layouts.json?" + Math.random(), function (err, layouts) {
+function install(optionsInstall,offline) {
+    cwpmURL.getJsonFile(offline,"https://raw.githubusercontent.com/ErwinConsultingFrance/evolve-layouts/master/layouts.json?" + Math.random(), function (err, layouts) {
         if (optionsInstall !== true && !layouts.hasOwnProperty(optionsInstall)) {
             console.error('the layout you try to install do not exist'.red);
             listALLlayouts(layouts);
@@ -28,7 +28,7 @@ function install(optionsInstall) {
             }
         }
         cwpmFile.writeInFile("./evolve.json", JSON.stringify(evolveJson, null, 4));
-        installLayouts(evolveJson, layouts);
+        installLayouts(evolveJson, layouts,offline);
     });
 }
 
@@ -41,15 +41,14 @@ function listALLlayouts(layouts) {
     }
 };
 
-function installLayouts(evolveJson, layouts) {
+function installLayouts(evolveJson, layouts,offline) {
     for (var layoutName in evolveJson.dependencies) {
         if (evolveJson.dependencies.hasOwnProperty(layoutName)) {
             console.log("get layout : " + layoutName);
             if (layouts[layoutName] && layouts[layoutName]['evolve-versions']) {
                 var fileUrl = findSatisfayingVersion(layouts[layoutName]['evolve-versions'], evolveJson['evolve-version']);
                 if (fileUrl !== undefined && fileUrl !== null) {
-                    console.log(('get file ' + fileUrl).green);
-                    cwpmURL.getRawFileContent(fileUrl, cwpmZip.UnzipLayout, layoutName);
+                    cwpmURL.getRawFileContent(fileUrl, cwpmZip.UnzipLayout, layoutName,offline);
                 } else {
                     console.error(['impossible to find ', layoutName, ' for current version of evolve which is ', evolveJson['evolve-version']].join('').red);
                 }

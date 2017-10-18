@@ -60,5 +60,21 @@
   },
   "directories": {},
   "_resolved": "https://registry.npmjs.org/cwpm/-/cwpm-0.0.2.tgz",
-  "readme": "ERROR: No README data found!"
+  "readme": "ERROR: No README data found!",
+  "nexe": {
+    "input": "./bin/nexe",
+    "output": "nexe^$",
+    "temp": "src",
+    "browserify": {
+      "requires": [],
+      "excludes": [],
+      "paths": []
+    },
+    "runtime": {
+      "framework": "node",
+      "version": "5.6.0",
+      "js-flags": "--use_strict",
+      "ignoreFlags": true
+    }
+  }
 }

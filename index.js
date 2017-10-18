@@ -22,6 +22,18 @@
         console.log(o.join(''));
     }
 
+    function checkInternet(cb) {
+        require('dns').lookup('google.com',function(err) {
+            if (err && err.code == "ENOTFOUND") {
+                cb(false);
+            } else {
+                cb(true);
+            }
+        })
+    }
+
+
+
 
     if (Object.keys(argv).length === 1) {
         outputUsage();
@@ -50,7 +62,17 @@
 
 
     if (options.install !== null) {
-        cwpm.install(options.install);
+        // example usage:
+        checkInternet(function(isConnected) {
+            if (isConnected) {
+                // connected to the internet
+                cwpm.install(options.install);
+            } else {
+                // not connected to the internet
+                cwpm.install(options.install,"C:/dev_layout/evolve-layouts");
+            }
+        });
+        
     }
 
     // if (options.init)

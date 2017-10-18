@@ -9,7 +9,6 @@ var archiver = require('archiver');
 
 function zipFolder(outFile, callback) {
     // require modules 
-     
     // create a file to stream archive data to. 
     var output = fs.createWriteStream(outFile);
     var archive = archiver('zip', {
@@ -57,7 +56,7 @@ function zipFolder(outFile, callback) {
 
 function UnzipLayout(err, data, layoutName) {
     // var data = fs.readFileSync(name, 'binary');
-    fs.writeFileSync('./remove_me_later.zip', data, 'binary');
+    if(data !== null) fs.writeFileSync('./remove_me_later.zip', data, 'binary');
     var zip = new AdmZip("./remove_me_later.zip");
     var zipEntries = zip.getEntries(); // an array of ZipEntry records
     var destination = "./webDesigner/custom/Marketplace/libs/" + layoutName;
