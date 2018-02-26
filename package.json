@@ -76,5 +76,8 @@
       "js-flags": "--use_strict",
       "ignoreFlags": true
     }
+  },
+  "devDependencies": {
+    "express": "^4.16.2"
   }
 }

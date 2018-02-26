@@ -91,7 +91,7 @@ function UnzipLayout(err, data, layoutName) {
     if (fs.existsSync(destination + '/angularHTMLayout')) {
         fs.readdir(destination + '/angularHTMLayout', function(err, items) {
             console.log("adding angularHtmlTemplate libs : " + items);
-            fs.copySync(destination + '/angularHTMLayout',"../../data/Common/html/angularLayouts");
+            fs.copySync(destination + '/angularHTMLayout',"../../data/Common/html");
             fs.removeSync(destination + '/angularHTMLayout');
         });
     }
