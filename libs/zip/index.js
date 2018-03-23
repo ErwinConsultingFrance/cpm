@@ -43,7 +43,13 @@ function zipFolder(outFile, callback) {
     }
     if (fs.existsSync('fonts')) {
         archive.directory('fonts/');
-    }        
+    }    
+    if (fs.existsSync('themes')) {
+        archive.directory('themes/');
+    }     
+
+
+    
     archive.file('Help_layout.pdf', { name: 'Help_layout.pdf' });  
     archive.file('Help_cpm.pdf', { name: 'Help_cpm.pdf' });   
     // finalize the archive (ie we are done appending files but streams have to finish yet) 
@@ -95,6 +101,15 @@ function UnzipLayout(err, data, layoutName) {
             fs.removeSync(destination + '/angularHTMLayout');
         });
     }
+
+    if (fs.existsSync(destination + '/themes')) {
+        fs.readdir(destination + '/themes', function(err, items) {
+            console.log("adding themes : " + items);
+            fs.copySync(destination + '/themes',"webDesigner/themes");
+            fs.removeSync(destination + '/themes');
+        });
+    }
+
 }
 
 module.exports = {
