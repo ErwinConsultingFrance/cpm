@@ -7,7 +7,7 @@ var fs = require('fs-extra');
 fs.rmrfSync = require('fs-extra').rmrfSync;
 var archiver = require('archiver');
 
-function zipFolder(outFile, callback) {
+function zipFolder(outFile,layoutName, callback) {
     // require modules 
     // create a file to stream archive data to. 
     var output = fs.createWriteStream(outFile);
@@ -30,28 +30,32 @@ function zipFolder(outFile, callback) {
     archive.pipe(output);
 
     if (fs.existsSync('angularHTMLayout')) {
-        archive.directory('angularHTMLayout/');
+        console.log("Archive angularHTMLayout");
+        archive.directory('Evolve/Data/Common/html/');
     }
     if (fs.existsSync('external')) {
-        archive.directory('external/');
+        console.log("Archive angularHTMLayout");
+        archive.directory('external/','Evolve/Site/bin/webDesigner/js/external/');
     }
     if (fs.existsSync('modules')) {
-        archive.directory('modules/');
+        console.log("Archive angularHTMLayout");
+        archive.directory('modules/','Evolve/Site/bin/webDesigner/libs/modules/');
     }
     if (fs.existsSync('src')) {
-        archive.directory('src/');
+        console.log("Archive angularHTMLayout");
+        archive.directory('src/','Evolve/Site/bin/webDesigner/custom/Marketplace/libs/' + layoutName + '/src/');
     }
     if (fs.existsSync('fonts')) {
-        archive.directory('fonts/');
+        console.log("Archive angularHTMLayout");
+        archive.directory('fonts/','Evolve/Site/bin/webDesigner/fonts/');
     }    
     if (fs.existsSync('themes')) {
-        archive.directory('themes/');
+        console.log("Archive themes");
+        archive.directory('themes/','Evolve/Site/bin/webDesigner/themes/');
     }     
-
-
-    
-    archive.file('Help_layout.pdf', { name: 'Help_layout.pdf' });  
-    archive.file('Help_cpm.pdf', { name: 'Help_cpm.pdf' });   
+    console.log("Archive help");
+    archive.directory('help/','Evolve/Site/bin/webDesigner/custom/Marketplace/libs/' + layoutName);
+   
     // finalize the archive (ie we are done appending files but streams have to finish yet) 
     archive.finalize();
 }
@@ -74,7 +78,15 @@ function UnzipLayout(err, data, layoutName) {
     cwpmFile.createDirIfNotExists("./webDesigner/custom/Marketplace/libs/" + layoutName);
     zip.extractAllTo("./webDesigner/custom/Marketplace/libs/" + layoutName, true);
     console.log((layoutName + " extracted").green);
+
+
+
     cwpmFile.removeFile('./remove_me_later.zip');
+
+    if (fs.existsSync(destination + '/Evolve')) {
+        fs.copySync(destination + '/Evolve',"../../../Evolve");
+        fs.removeSync(destination + '/Evolve');
+    };
 
     if (fs.existsSync(destination + '/external')) {
         fs.readdir(destination + '/external', function(err, items) {

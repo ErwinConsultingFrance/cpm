@@ -24,15 +24,15 @@ function BuildPackage(err) {
 
         var wikiPath = layoutPackage.wiki + '/Home.md';
         console.log('fetch wiki page', wikiPath);
-
+        cwpmFile.createDirIfNotExists("./help");
         var callback = 2;
         request(wikiPath, function (err, res, body) {
-            cwpmFile.writeInFile('./Help_layout.md', body);
-            cwpmMarkDown.exportReadmeMDtoPDF('./Help_layout.md', function () {
+            cwpmFile.writeInFile('./help/Help_layout.md', body);
+            cwpmMarkDown.exportReadmeMDtoPDF('./help/Help_layout.md', function () {
                 callback = callback - 1;
                 if(callback === 0) {
                     setTimeout(function () {
-                        cwpmZip.zipFolder(name, function () {
+                        cwpmZip.zipFolder(name,layoutPackage.name, function () {
                             console.log('zip is done'.green);
                         });
                     }, 0); // wait the pdf to load?
@@ -40,12 +40,12 @@ function BuildPackage(err) {
             });
         });
         request("https://github.com/ErwinConsultingFrance/cpm/wiki/Home.md", function (err, res, body) {
-            cwpmFile.writeInFile('./Help_cpm.md', body);
-            cwpmMarkDown.exportReadmeMDtoPDF('./Help_cpm.md', function () {
+            cwpmFile.writeInFile('./help/Help_cpm.md', body);
+            cwpmMarkDown.exportReadmeMDtoPDF('./help/Help_cpm.md', function () {
                 callback = callback - 1;
                 if(callback === 0) {
                     setTimeout(function () {
-                        cwpmZip.zipFolder(name, function () {
+                        cwpmZip.zipFolder(name,layoutPackage.name, function () {
                             console.log('zip is done'.green);
                         });
                     }, 0); // wait the pdf to load?
