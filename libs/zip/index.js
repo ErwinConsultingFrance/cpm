@@ -34,19 +34,19 @@ function zipFolder(outFile,layoutName, callback) {
         archive.directory('Evolve/Data/Common/html/');
     }
     if (fs.existsSync('external')) {
-        console.log("Archive angularHTMLayout");
+        console.log("Archive external");
         archive.directory('external/','Evolve/Site/bin/webDesigner/js/external/');
     }
     if (fs.existsSync('modules')) {
-        console.log("Archive angularHTMLayout");
+        console.log("Archive modules");
         archive.directory('modules/','Evolve/Site/bin/webDesigner/libs/modules/');
     }
     if (fs.existsSync('src')) {
-        console.log("Archive angularHTMLayout");
+        console.log("Archive src");
         archive.directory('src/','Evolve/Site/bin/webDesigner/custom/Marketplace/libs/' + layoutName + '/src/');
     }
     if (fs.existsSync('fonts')) {
-        console.log("Archive angularHTMLayout");
+        console.log("Archive fonts");
         archive.directory('fonts/','Evolve/Site/bin/webDesigner/fonts/');
     }    
     if (fs.existsSync('themes')) {
