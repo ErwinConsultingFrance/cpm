@@ -31,7 +31,7 @@ function zipFolder(outFile,layoutName, callback) {
 
     if (fs.existsSync('angularHTMLayout')) {
         console.log("Archive angularHTMLayout");
-        archive.directory('Evolve/Data/Common/html/');
+        archive.directory('angularHTMLayout/','Evolve/Data/Common/html/');
     }
     if (fs.existsSync('external')) {
         console.log("Archive external");
