@@ -7,6 +7,7 @@ var layout = require('./layout');
 var repository = require('./repository');
 var package = require('./package');
 var install = require('./install');
+var update = require('./update');
 
 cwpm["file"] = {};
 Object.keys(file).forEach(function (key) {
@@ -43,6 +44,10 @@ Object.keys(package).forEach(function (key) {
 
 Object.keys(install).forEach(function (key) {
     cwpm[key] = install[key];
+});
+
+Object.keys(update).forEach(function (key) {
+    cwpm[key] = update[key];
 });
 
 module.exports = cwpm

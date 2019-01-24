@@ -29,7 +29,7 @@
             } else {
                 cb(true);
             }
-        })
+        });
     }
 
 
@@ -44,6 +44,7 @@
         template: argv.template || argv.t || 'cwLayout',
         package: argv.package || null,
         install: argv.install || null,
+        update: argv.update || null,
         register: argv.register || null,
         init: argv.init || null
     };
@@ -54,6 +55,23 @@
             console.log('generation done.');
         });
     }
+
+    if (options.update !== null) {
+        if(options.update === true) return;
+
+        checkInternet(function(isConnected) {
+            if (isConnected) {
+                // connected to the internet
+                cwpm.DoUpdate(options.update);
+            } else {
+                // not connected to the internet
+                cwpm.DoUpdate(options.update,"C:/dev_layout/evolve-layouts");
+            }
+        });
+
+
+    }
+
 
     if (options.package !== null) {
         options.package = (options.package === true ? 'patch' : options.package);
