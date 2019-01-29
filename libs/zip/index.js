@@ -28,7 +28,11 @@ function zipFolder(outFile,layoutName, callback) {
      
      // pipe archive data to the file 
     archive.pipe(output);
-
+    
+    if (fs.existsSync('ngDirectives')) {
+        console.log("Archive ngDirective");
+        archive.directory('ngDirectives/','Evolve/Site/bin/webDesigner/libs/ngDirectives');
+    }
     if (fs.existsSync('angularHTMLayout')) {
         console.log("Archive angularHTMLayout");
         archive.directory('angularHTMLayout/','Evolve/Data/Common/html/');
