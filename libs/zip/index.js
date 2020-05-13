@@ -35,7 +35,7 @@ function zipFolder(outFile, layoutName, callback) {
   }
   if (fs.existsSync("angularHTMLayout")) {
     console.log("Archive angularHTMLayout");
-    archive.directory("angularHTMLayout/", "Evolve/Site/bin/webDesigner/custom/Marketplace/libs/" + layoutName + "/" + layoutName);
+    archive.directory("angularHTMLayout/", "Evolve/Site/bin/webDesigner/custom/Marketplace/libs/" + layoutName);
   }
   if (fs.existsSync("external")) {
     console.log("Archive external");
