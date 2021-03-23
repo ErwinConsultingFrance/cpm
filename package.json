@@ -1,5 +1,5 @@
 {
-  "name": "cwpm2",
+  "name": "cwpm42",
   "version": "1.0.0",
   "description": "casewise layout package manager",
   "main": "index.js",
@@ -44,10 +44,7 @@
     "name": "casewise",
     "email": "mpfauwadel@erwin.com"
   },
-  "dist": {
-    "shasum": "44fa3e4f06a944c9ba09af97db8bac7eb456356d",
-    "tarball": "https://registry.npmjs.org/cwpm/-/cwpm-0.0.2.tgz"
-  },
+
   "maintainers": [
     {
       "name": "casewise",
