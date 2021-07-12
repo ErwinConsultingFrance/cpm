@@ -16,13 +16,13 @@ function zipFolder(outFile, layoutName, callback) {
   });
 
   // listen for all archive data to be written
-  output.on("close", function () {
+  output.on("close", function() {
     console.log(archive.pointer() + " total bytes");
     console.log("archiver has been finalized and the output file descriptor has closed.");
   });
 
   // good practice to catch this error explicitly
-  archive.on("error", function (err) {
+  archive.on("error", function(err) {
     throw err;
   });
 
@@ -31,7 +31,7 @@ function zipFolder(outFile, layoutName, callback) {
 
   if (fs.existsSync("ngDirectives")) {
     console.log("Archive ngDirective");
-    archive.directory("ngDirectives/", "Evolve/Site/bin/webDesigner/libs/ngDirectives");
+    archive.directory("ngDirectives/", "Evolve/Site/bin/webDesigner/custom/Marketplace/libs/ngDirectives");
   }
   if (fs.existsSync("angularHTMLayout")) {
     console.log("Archive angularHTMLayout");
@@ -87,7 +87,7 @@ function UnzipLayout(err, data, layoutName) {
   }
 
   if (fs.existsSync(destination + "/external")) {
-    fs.readdir(destination + "/external", function (err, items) {
+    fs.readdir(destination + "/external", function(err, items) {
       console.log("adding sync libs : " + items);
       fs.copySync(destination + "/external", "webDesigner/js/external");
       fs.removeSync(destination + "/external");
@@ -95,7 +95,7 @@ function UnzipLayout(err, data, layoutName) {
   }
 
   if (fs.existsSync(destination + "/modules")) {
-    fs.readdir(destination + "/modules", function (err, items) {
+    fs.readdir(destination + "/modules", function(err, items) {
       console.log("adding async libs : " + items);
       fs.copySync(destination + "/modules", "webDesigner/libs/modules");
       fs.removeSync(destination + "/modules");
@@ -103,7 +103,7 @@ function UnzipLayout(err, data, layoutName) {
   }
 
   if (fs.existsSync(destination + "/angularHTMLayout")) {
-    fs.readdir(destination + "/angularHTMLayout", function (err, items) {
+    fs.readdir(destination + "/angularHTMLayout", function(err, items) {
       console.log("adding angularHtmlTemplate libs : " + items);
       fs.copySync(destination + "/angularHTMLayout", "../../data/Common/html");
       fs.removeSync(destination + "/angularHTMLayout");
@@ -111,7 +111,7 @@ function UnzipLayout(err, data, layoutName) {
   }
 
   if (fs.existsSync(destination + "/themes")) {
-    fs.readdir(destination + "/themes", function (err, items) {
+    fs.readdir(destination + "/themes", function(err, items) {
       console.log("adding themes : " + items);
       fs.copySync(destination + "/themes", "webDesigner/themes");
       fs.removeSync(destination + "/themes");

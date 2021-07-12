@@ -1,5 +1,5 @@
 {
-  "name": "qpackager",
+  "name": "cwpm42",
   "version": "1.1.0",
   "description": "casewise layout package manager",
   "main": "index.js",
@@ -14,7 +14,7 @@
     "url": "git+ssh://git@github.com/casewise/cpm.git"
   },
   "author": {
-    "name": "pouya.mohtacham@casewise.com"
+    "name": "mpfauwadel@erwin.com"
   },
   "license": "MIT",
   "bugs": {
@@ -42,16 +42,12 @@
   "_nodeVersion": "6.5.0",
   "_npmUser": {
     "name": "casewise",
-    "email": "pouya.mohtacham@casewise.com"
-  },
-  "dist": {
-    "shasum": "44fa3e4f06a944c9ba09af97db8bac7eb456356d",
-    "tarball": "https://registry.npmjs.org/cwpm/-/cwpm-0.0.2.tgz"
+    "email": "mpfauwadel@erwin.com"
   },
   "maintainers": [
     {
       "name": "casewise",
-      "email": "pouya.mohtacham@casewise.com"
+      "email": "mpfauwadel@erwin.com"
     }
   ],
   "_npmOperationalInternal": {
