@@ -10,7 +10,7 @@ var findVersions = require('find-versions');
 
 function DoUpdate(layoutToUpdate,offline) {
     console.log("Updating : " + layoutToUpdate);
-    cwpmURL.getJsonFile(offline,"https://raw.githubusercontent.com/ErwinConsultingFrance/evolve-layouts/master/layouts.json?" + Math.random(), function (err, layouts) {
+    cwpmURL.getJsonFile(offline,"https://raw.githubusercontent.com/nevakee716/evolve-layouts/master/layouts.json?" + Math.random(), function (err, layouts) {
         if (!layouts.hasOwnProperty(layoutToUpdate)) {
             console.error('the layout you try to update do not exist'.red);
             listALLlayouts(layouts);

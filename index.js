@@ -119,7 +119,7 @@
                         if (layoutToAdd.hasOwnProperty("wiki")) {
                             layoutsJson[layoutToAdd.name]["wiki"] = layoutToAdd["wiki"];
                         }
-                        var gitPackageUrl = "https://github.com/ErwinConsultingFrance/evolve-layouts/raw/master/dist/" + layoutToAdd.name + "/" + layoutToAddPackage;
+                        var gitPackageUrl = "https://github.com/nevakee716/evolve-layouts/raw/master/dist/" + layoutToAdd.name + "/" + layoutToAddPackage;
                         layoutsJson[layoutToAdd.name]["evolve-versions"] = {};
                         layoutsJson[layoutToAdd.name]["evolve-versions"][layoutToAdd["evolve-version"]] = gitPackageUrl;
 
@@ -130,7 +130,7 @@
                         if (layoutToAdd.hasOwnProperty("wiki")) {
                             layoutsJson[layoutToAdd.name]["wiki"] = layoutToAdd["wiki"];
                         }
-                        var gitPackageUrl = "https://github.com/ErwinConsultingFrance/evolve-layouts/raw/master/dist/" + layoutToAdd.name + "/" + layoutToAddPackage;
+                        var gitPackageUrl = "https://github.com/nevakee716/evolve-layouts/raw/master/dist/" + layoutToAdd.name + "/" + layoutToAddPackage;
                         layoutsJson[layoutToAdd.name]["evolve-versions"][layoutToAdd["evolve-version"]] = gitPackageUrl;
                     }
                     fs.copySync("dist/" + layoutToAddPackage, options.register + "/dist/" + layoutToAdd.name + "/" + layoutToAddPackage);

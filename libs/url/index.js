@@ -11,6 +11,7 @@ function getRawFileContent(fileUrl, callback,paramCallback,offline) {
             encoding: null
         }, function(error, response, body) {
             if (!error && response.statusCode === 200) {
+                console.log(('file received' + fileUrl).green);
                 return callback && callback(null, body,paramCallback);
             } else {
                 return error;

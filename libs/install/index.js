@@ -9,7 +9,7 @@ var semver = require('semver');
 var findVersions = require('find-versions');
 
 function install(optionsInstall,offline) {
-    cwpmURL.getJsonFile(offline,"https://raw.githubusercontent.com/ErwinConsultingFrance/evolve-layouts/master/layouts.json?" + Math.random(), function (err, layouts) {
+    cwpmURL.getJsonFile(offline,"https://raw.githubusercontent.com/nevakee716/evolve-layouts/master/layouts.json?" + Math.random(), function (err, layouts) {
         if (optionsInstall !== true && !layouts.hasOwnProperty(optionsInstall)) {
             console.error('the layout you try to install do not exist'.red);
             listALLlayouts(layouts);

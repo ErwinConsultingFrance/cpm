@@ -1,5 +1,5 @@
 {
-  "name": "cwpm",
+  "name": "qpackager",
   "version": "1.1.0",
   "description": "casewise layout package manager",
   "main": "index.js",
