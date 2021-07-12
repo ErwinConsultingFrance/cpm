@@ -27,7 +27,7 @@
     "colors": "^1.1.2",
     "find-versions": "^2.0.0",
     "fs-extra": "^1.0.0",
-    "markdown-pdf": "^7.0.0",
+    "markdown-pdf": "^10.0.0",
     "minimist": "^1.2.0",
     "node-zip": "^1.1.1",
     "npm": "^3.10.9",
